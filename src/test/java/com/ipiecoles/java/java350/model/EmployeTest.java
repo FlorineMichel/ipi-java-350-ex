@@ -90,4 +90,14 @@ public class EmployeTest {
         Assertions.assertThat(prime).isEqualTo(primeAttendu);
     }
 
+    @Test
+    public void testGetPrimeAnnuelleMatriculeNull(){
+        Employe employe = new Employe("Doe", "John", null,
+                LocalDate.now(), 1500d, 1, 1.0);
+
+        Double prime = employe.getPrimeAnnuelle();
+
+        Assertions.assertThat(prime).isEqualTo(1000.0);
+    }
+
 }
