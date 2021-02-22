@@ -22,11 +22,14 @@ class EmployeRepositoryIntegrationTest {
         employeRepository.save(new Employe("Dean", "John", "C12345", LocalDate.now(), 1500d, 3, 1.0));
         employeRepository.save(new Employe("Joe", "Dohn", "C55555", LocalDate.now(), 1500d, 5, 1.0));
         employeRepository.save(new Employe("Doe", "John", "C77777", LocalDate.now(), 1500d, 1, 1.0));
-        employeRepository.save(new Employe("Doe", "John", "C77777", LocalDate.now(), 1500d, 3, 1.0));
+        employeRepository.save(new Employe("Doe", "John", "C66666", LocalDate.now(), 1500d, 3, 1.0));
+        employeRepository.save(new Employe("Doe", "John", "M12353", LocalDate.now(), 1500d, null, 1.0));
 
-        Double avgPerf = employeRepository.avgPerformanceWhereMatriculeStartsWith("C");
+        Double avgPerfC = employeRepository.avgPerformanceWhereMatriculeStartsWith("C");
+        Double avgPerfM = employeRepository.avgPerformanceWhereMatriculeStartsWith("M");
 
-        Assertions.assertThat(avgPerf).isEqualTo(3);
+        Assertions.assertThat(avgPerfC).isEqualTo(3);
+        Assertions.assertThat(avgPerfM).isNull();
     }
 
     @BeforeEach

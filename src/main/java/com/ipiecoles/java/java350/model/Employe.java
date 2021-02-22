@@ -136,8 +136,9 @@ public class Employe {
     }
 
     //Augmenter salaire
+    //conditions pour éviter un salaire null, et pourcentage entre 0 et 1
     public void augmenterSalaire(double pourcentage){
-        if (this.salaire != null){
+        if (this.salaire != null && pourcentage > 0 && pourcentage < 1.1){
             setSalaire(this.salaire * (1 + pourcentage));
         }
     }

@@ -155,22 +155,22 @@ public class EmployeTest {
         employe.augmenterSalaire(pourcentage);
 
         //then
-        Assertions.assertThat(employe.getSalaire()).isLessThan(salaireBase);
+        Assertions.assertThat(employe.getSalaire()).isEqualTo(salaireBase);
     }
 
     @Test
     void testAugmenterSalairePourcentageSupUn(){
         //given
         Double pourcentage = 1.1;
-
+        Double salaireBase = 1500.0;
         Employe employe = new Employe();
-        employe.setSalaire(1500.0);
+        employe.setSalaire(salaireBase);
 
         //when
         employe.augmenterSalaire(pourcentage);
 
         //then
-        Assertions.assertThat(pourcentage).isGreaterThan(1);
+        Assertions.assertThat(employe.getSalaire()).isEqualTo(salaireBase);
     }
 
     /*
