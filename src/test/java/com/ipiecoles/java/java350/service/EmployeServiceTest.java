@@ -31,7 +31,7 @@ class EmployeServiceTest {
     private EmployeRepository employeRepository;
 
     private static Logger logger = LoggerFactory.getLogger(EmployeServiceTest.class);
-    
+
     @Test
     void testEmbaucheLimiteMatricule() throws EmployeException {
         //given
@@ -132,38 +132,38 @@ class EmployeServiceTest {
     - caObjectif / caTraite null ou zero : renvoyer exception
     - le matricule n'existe pas : renvoyer exception
      */
-//    @ParameterizedTest
-//    @CsvSource({
-//            "10, 10000, 4, 1", /* 1 : Si le chiffre d'affaire est inférieur de plus de 20% à l'objectif fixé, le commercial retombe à la performance de base */
-//            "10, 100, 4, 2", /* 2 : Si le chiffre d'affaire est inférieur entre 20% et 5% par rapport à l'ojectif fixé, il perd 2 de performance (dans la limite de la performance de base) */
-//            "1000, 1000, 1, 1", /* 3 : Si le chiffre d'affaire est entre -5% et +5% de l'objectif fixé, la performance reste la même.*/
-//            "100, 10, 1, 2", /* 4 : Si le chiffre d'affaire est supérieur entre 5 et 20%, il gagne 1 de performance*/
-//            "10000, 10, 1, 5", /* 5 : Si le chiffre d'affaire est supérieur de plus de 20%, il gagne 4 de performance */
-//            "1000, 1000, 1, 2" /* Cas avec n°3 et perf individuel > AVG */
-//    })
-//    void testCalculPerformanceCommercial(Long caTraite, Long objectifCa, Integer perfBase, Integer perfAttendu) throws EmployeException {
-//        //given
-//        String nom = "Doe";
-//        String prenom = "Jojo";
-//        Poste poste = Poste.COMMERCIAL;
-//        NiveauEtude niveauEtude = NiveauEtude.BTS_IUT;
-//        Double tempsPartiel = 1.0;
-//
-//        Employe employe;
-//        String matricule  = "C00001";
-//        Mockito.when(employeRepository.findByMatricule(matricule)).thenReturn(
-//                employe = new Employe("Doe", "Joe", matricule, LocalDate.now(), 1500d, perfBase, 1.0)
-//        );
-//
-//        //Integer performanceBase = employe.getPerformance();
-//
-//        //when
-//        employeService.calculPerformanceCommercial(employe.getMatricule(),caTraite, objectifCa);
-//        //then
-//
-//        //+1 parce que + avg selon les performances des autres commerciaux
-//        Assertions.assertThat(employe.getPerformance()).isEqualTo(perfAttendu);
-//    }
+    @ParameterizedTest
+    @CsvSource({
+            "10, 10000, 4, 2", /* 1 : Si le chiffre d'affaire est inférieur de plus de 20% à l'objectif fixé, le commercial retombe à la performance de base */
+            "10, 100, 4, 2", /* 2 : Si le chiffre d'affaire est inférieur entre 20% et 5% par rapport à l'ojectif fixé, il perd 2 de performance (dans la limite de la performance de base) */
+            "1000, 1000, 1, 2", /* 3 : Si le chiffre d'affaire est entre -5% et +5% de l'objectif fixé, la performance reste la même.*/
+            "120, 100, 1, 3", /* 4 : Si le chiffre d'affaire est supérieur entre 5 et 20%, il gagne 1 de performance*/
+            "10000, 10, 1, 6", /* 5 : Si le chiffre d'affaire est supérieur de plus de 20%, il gagne 4 de performance */
+            "1000, 1000, 1, 2" /* Cas avec n°3 et perf individuel > AVG */
+    })
+    void testCalculPerformanceCommercial(Long caTraite, Long objectifCa, Integer perfBase, Integer perfAttendu) throws EmployeException {
+        //given
+        String nom = "Doe";
+        String prenom = "Jojo";
+        Poste poste = Poste.COMMERCIAL;
+        NiveauEtude niveauEtude = NiveauEtude.BTS_IUT;
+        Double tempsPartiel = 1.0;
+
+        Employe employe;
+        String matricule  = "C00001";
+        Mockito.when(employeRepository.findByMatricule(matricule)).thenReturn(
+                employe = new Employe("Doe", "Joe", matricule, LocalDate.now(), 1500d, perfBase, 1.0)
+        );
+
+        //Integer performanceBase = employe.getPerformance();
+
+        //when
+        employeService.calculPerformanceCommercial(employe.getMatricule(),caTraite, objectifCa);
+        //then
+
+        //+1 parce que + avg selon les performances des autres commerciaux
+        Assertions.assertThat(employe.getPerformance()).isEqualTo(perfAttendu);
+    }
 
     @ParameterizedTest
     @CsvSource({
