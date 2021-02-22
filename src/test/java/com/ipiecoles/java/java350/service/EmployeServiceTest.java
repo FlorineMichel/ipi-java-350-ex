@@ -69,7 +69,7 @@ class EmployeServiceTest {
     }
 
     @Test
-    public void testEmbaucheEmployeExisteDeja() throws EntityExistsException {
+    public void testEmbaucheEmployeExisteDeja() {
         //given
         String nom = "Doe";
         String prenom = "Jojo";
@@ -84,7 +84,7 @@ class EmployeServiceTest {
         try {
             employeService.embaucheEmploye(nom, prenom, poste, niveauEtude, tempsPartiel);
             Assertions.fail("embauche employe aurait du lancer une exception");
-        } catch (EntityExistsException | EmployeException e){
+        } catch (Exception e){
             //then
             logger.error(e.getMessage());
             Assertions.assertThat(e).isInstanceOf(EntityExistsException.class);
