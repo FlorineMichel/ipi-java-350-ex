@@ -45,4 +45,31 @@ class EmployeServiceIntegrationTest {
         Assertions.assertThat(employe.getDateEmbauche()).isEqualTo(LocalDate.now());
         Assertions.assertThat(employe.getMatricule()).isEqualTo("T00001");
     }
+
+
+    /*
+    tests TP
+     */
+    @Test
+    public void testCalculPerformanceCommercial() throws EmployeException {
+        //given
+        String nom = "Doe";
+        String prenom = "Jojo";
+        Poste poste = Poste.COMMERCIAL;
+        NiveauEtude niveauEtude = NiveauEtude.BTS_IUT;
+        Double tempsPartiel = 1.0;
+
+        //when
+        employeService.embaucheEmploye(nom, prenom, poste, niveauEtude, tempsPartiel);
+        List<Employe> employes = employeRepository.findAll();
+        Assertions.assertThat(employes).hasSize(1);
+        Employe employe = employeRepository.findAll().get(0);
+
+        Integer performanceBase = employe.getPerformance();
+
+        employeService.calculPerformanceCommercial(employe.getMatricule(), 1000L, 1000L);
+
+        //+1 parce que + avg selon les performances des autres commerciaux. Vu que notre employe est seul, +1 au test
+        Assertions.assertThat(employe.getPerformance()).isEqualTo(performanceBase);
+    }
 }

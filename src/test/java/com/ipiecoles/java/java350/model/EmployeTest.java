@@ -5,6 +5,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.springframework.test.context.TestPropertySource;
 
 import java.time.LocalDate;
 
@@ -101,6 +102,99 @@ public class EmployeTest {
         Double prime = employe.getPrimeAnnuelle();
 
         Assertions.assertThat(prime).isEqualTo(1000.0);
+    }
+
+
+    /*
+    TESTS TP
+     */
+
+    /*
+    tests pour la méthode augmenterSalaire
+    base calcul : (1 + @pourcentage) * salaire
+    cas possible lorsqu'on augmente un salaire :
+    - si salaire non def (0 ou null)
+    - si pourcentage incorrect (> 1 ou < 0)
+    - si pourcentage = 0
+    -
+    */
+
+    //salaire null
+    @Test
+    public void testAugmenterSalaireNull(){
+        //given
+        Employe employe = new Employe("Doe", "John", "C00001",
+                LocalDate.now(), null, 1, 1.0);
+        //when
+        employe.augmenterSalaire(0.5);
+        //then
+        Assertions.assertThat(employe.getSalaire()).isNull();
+    }
+
+    @Test
+    public void testAugmenterSalaireZero(){
+        //given
+        Employe employe = new Employe();
+        employe.setSalaire(0.0);
+
+        //when
+        employe.augmenterSalaire(0.5);
+
+        //then
+        Assertions.assertThat(employe.getSalaire()).isEqualTo(0);
+    }
+
+    @Test
+    public void testAugmenterSalairePourcentageNegatif(){
+        //given
+        Double pourcentage = -0.1;
+
+        Employe employe = new Employe();
+        Double salaireBase = 1500.0;
+        employe.setSalaire(salaireBase);
+
+        //when
+        employe.augmenterSalaire(pourcentage);
+
+        //then
+        Assertions.assertThat(employe.getSalaire()).isLessThan(salaireBase);
+    }
+
+    @Test
+    public void testAugmenterSalairePourcentageSupUn(){
+        //given
+        Double pourcentage = 1.1;
+
+        Employe employe = new Employe();
+        employe.setSalaire(1500.0);
+
+        //when
+        employe.augmenterSalaire(pourcentage);
+
+        //then
+        Assertions.assertThat(pourcentage).isGreaterThan(1);
+    }
+
+    /*
+    Test pour getNbRTT
+     */
+
+    @ParameterizedTest(name = "date : {0} nbRTT : {1}")
+    @CsvSource({
+            "2019, 8",
+            "2021, 10",
+            "2022, 10",
+            "2032, 11"
+    })
+    public void testGetNbRtt(Integer dateReference, Integer nbAttendu){
+        //given
+        Employe employe = new Employe();
+
+        //when
+        Integer nbRTT = employe.getNbRtt(LocalDate.of(dateReference, 1, 1));
+
+        //then
+        Assertions.assertThat(nbRTT).isEqualTo(nbAttendu);
     }
 
 }
