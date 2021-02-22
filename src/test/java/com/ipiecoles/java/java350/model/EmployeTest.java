@@ -183,7 +183,9 @@ public class EmployeTest {
             "2019, 8",
             "2021, 10",
             "2022, 10",
-            "2032, 11"
+            "2032, 11",
+            "2016, 9", /* pour cas de Vendredi */
+            "2026, 9" /* pour cas de Jeudi*/
     })
     void testGetNbRtt(Integer dateReference, Integer nbAttendu){
         //given
