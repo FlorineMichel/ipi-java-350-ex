@@ -67,7 +67,7 @@ class EmployeServiceIntegrationTest {
 
         Integer performanceBase = employe.getPerformance();
 
-        employeService.calculPerformanceCommercial(employe.getMatricule(), 1000L, 1000L);
+        employeService.calculPerformanceCommercial(employe.getMatricule(), 0L, 1000L);
 
         //+1 parce que + avg selon les performances des autres commerciaux. Vu que notre employe est seul, +1 au test
         Assertions.assertThat(employe.getPerformance()).isEqualTo(performanceBase);
