@@ -31,10 +31,9 @@ class EmployeServiceTest {
     private EmployeRepository employeRepository;
 
     private static Logger logger = LoggerFactory.getLogger(EmployeServiceTest.class);
-
-
+    
     @Test
-    public void testEmbaucheLimiteMatricule() throws EmployeException {
+    void testEmbaucheLimiteMatricule() throws EmployeException {
         //given
         String nom = "Doe";
         String prenom = "Jojo";
@@ -69,7 +68,7 @@ class EmployeServiceTest {
     }
 
     @Test
-    public void testEmbaucheEmployeExisteDeja() {
+    void testEmbaucheEmployeExisteDeja() {
         //given
         String nom = "Doe";
         String prenom = "Jojo";
@@ -93,7 +92,7 @@ class EmployeServiceTest {
     }
 
     @Test
-    public void testEmbauchePremierEmploye() throws EmployeException {
+    void testEmbauchePremierEmploye() throws EmployeException {
         //given
         String nom = "Doe";
         String prenom = "Jojo";
@@ -142,7 +141,7 @@ class EmployeServiceTest {
 //            "10000, 10, 1, 5", /* 5 : Si le chiffre d'affaire est supérieur de plus de 20%, il gagne 4 de performance */
 //            "1000, 1000, 1, 2" /* Cas avec n°3 et perf individuel > AVG */
 //    })
-//    public void testCalculPerformanceCommercial(Long caTraite, Long objectifCa, Integer perfBase, Integer perfAttendu) throws EmployeException {
+//    void testCalculPerformanceCommercial(Long caTraite, Long objectifCa, Integer perfBase, Integer perfAttendu) throws EmployeException {
 //        //given
 //        String nom = "Doe";
 //        String prenom = "Jojo";
@@ -171,7 +170,7 @@ class EmployeServiceTest {
             ",",
             "T00001"
     })
-    public void testCalculPerformanceCommercialMatriculeNullOrNotBeginWithC(String matricule) {
+    void testCalculPerformanceCommercialMatriculeNullOrNotBeginWithC(String matricule) {
         //given
         String nom = "Doe";
         String prenom = "Jojo";
@@ -195,7 +194,7 @@ class EmployeServiceTest {
     }
 
     @Test
-    public void testCalculPerformanceCommercialMatriculeDoNotExist() {
+    void testCalculPerformanceCommercialMatriculeDoNotExist() {
         //given
         String matricule = "C12345";
 
@@ -217,7 +216,7 @@ class EmployeServiceTest {
             ",",
             "-1000"
     })
-    public void testCalculPerformanceCommercialObjectifCaNullOrNegatif(Long objectifCa){
+    void testCalculPerformanceCommercialObjectifCaNullOrNegatif(Long objectifCa){
         //given
         String nom = "Doe";
         String prenom = "Jojo";
@@ -244,7 +243,7 @@ class EmployeServiceTest {
             ",",
             "-1000"
     })
-    public void testCalculPerformanceCommercialCaTraiteNullOrNegatif(Long caTraite ){
+    void testCalculPerformanceCommercialCaTraiteNullOrNegatif(Long caTraite ){
         //given
         String nom = "Doe";
         String prenom = "Jojo";

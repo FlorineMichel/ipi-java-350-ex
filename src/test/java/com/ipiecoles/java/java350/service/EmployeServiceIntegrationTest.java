@@ -25,7 +25,7 @@ class EmployeServiceIntegrationTest {
     private EmployeRepository employeRepository;
 
     @Test
-    public void testEmbauchePremierEmploye() throws EmployeException {
+    void testEmbauchePremierEmploye() throws EmployeException {
         //given
         String nom = "Doe";
         String prenom = "Jojo";
@@ -53,7 +53,7 @@ class EmployeServiceIntegrationTest {
     tests TP
      */
     @Test
-    public void testCalculPerformanceCommercial() throws EmployeException {
+    void testCalculPerformanceCommercial() throws EmployeException {
         //given
         String nom = "Doe";
         String prenom = "Jojo";

@@ -5,14 +5,13 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.springframework.test.context.TestPropertySource;
 
 import java.time.LocalDate;
 
 public class EmployeTest {
 
     @Test
-    public void testGetNombreAnneeAncienneteInfNow() {
+    void testGetNombreAnneeAncienneteInfNow() {
         //given
         LocalDate dateEmbauche = LocalDate.of(LocalDate.now().minusYears(6).getYear(), 02, 12);
 
@@ -30,7 +29,7 @@ public class EmployeTest {
     }
 
     @Test
-    public void testGetNombreAnneeAncienneteSupNow() {
+    void testGetNombreAnneeAncienneteSupNow() {
         //given
         LocalDate dateEmbauche = LocalDate.of(LocalDate.now().plusYears(6).getYear(), 02, 12);
 
@@ -45,7 +44,7 @@ public class EmployeTest {
     }
 
     @Test
-    public void testGetNbAnneeAncienneteDateEmbaucheNull(){
+    void testGetNbAnneeAncienneteDateEmbaucheNull(){
         //given
         Employe employe = new Employe();
         employe.setDateEmbauche(null);
@@ -58,7 +57,7 @@ public class EmployeTest {
     }
 
     @Test
-    public void testGetNbAnneeAncienneteDateEmbaucheNow(){
+    void testGetNbAnneeAncienneteDateEmbaucheNow(){
         //Given
         Employe employe = new Employe("Doe", "John", "T12345",
                 LocalDate.now(), 1500d, 1, 1.0);
@@ -84,7 +83,7 @@ public class EmployeTest {
             "1, 'M12345', 1.0, 0, 1700d",
             "1, 'M12345', 1.0, 3, 2000d"
     })
-    public void testGetPrimeAnnuelle(Integer performance, String matricule, Double tauxActivite, Long nbAnneesAnciennete, Double primeAttendu){
+    void testGetPrimeAnnuelle(Integer performance, String matricule, Double tauxActivite, Long nbAnneesAnciennete, Double primeAttendu){
 
         Employe employe = new Employe("Doe", "John", matricule,
                 LocalDate.now().minusYears(nbAnneesAnciennete), 1500d, performance, tauxActivite);
@@ -95,7 +94,7 @@ public class EmployeTest {
     }
 
     @Test
-    public void testGetPrimeAnnuelleMatriculeNull(){
+    void testGetPrimeAnnuelleMatriculeNull(){
         Employe employe = new Employe("Doe", "John", null,
                 LocalDate.now(), 1500d, 1, 1.0);
 
@@ -121,7 +120,7 @@ public class EmployeTest {
 
     //salaire null
     @Test
-    public void testAugmenterSalaireNull(){
+    void testAugmenterSalaireNull(){
         //given
         Employe employe = new Employe("Doe", "John", "C00001",
                 LocalDate.now(), null, 1, 1.0);
@@ -132,7 +131,7 @@ public class EmployeTest {
     }
 
     @Test
-    public void testAugmenterSalaireZero(){
+    void testAugmenterSalaireZero(){
         //given
         Employe employe = new Employe();
         employe.setSalaire(0.0);
@@ -141,11 +140,11 @@ public class EmployeTest {
         employe.augmenterSalaire(0.5);
 
         //then
-        Assertions.assertThat(employe.getSalaire()).isEqualTo(0);
+        Assertions.assertThat(employe.getSalaire()).isZero();
     }
 
     @Test
-    public void testAugmenterSalairePourcentageNegatif(){
+    void testAugmenterSalairePourcentageNegatif(){
         //given
         Double pourcentage = -0.1;
 
@@ -161,7 +160,7 @@ public class EmployeTest {
     }
 
     @Test
-    public void testAugmenterSalairePourcentageSupUn(){
+    void testAugmenterSalairePourcentageSupUn(){
         //given
         Double pourcentage = 1.1;
 
@@ -186,7 +185,7 @@ public class EmployeTest {
             "2022, 10",
             "2032, 11"
     })
-    public void testGetNbRtt(Integer dateReference, Integer nbAttendu){
+    void testGetNbRtt(Integer dateReference, Integer nbAttendu){
         //given
         Employe employe = new Employe();
 
