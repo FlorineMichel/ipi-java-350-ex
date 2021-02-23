@@ -1,6 +1,5 @@
 package com.ipiecoles.java.java350.model;
 
-import com.ipiecoles.java.java350.model.Employe;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -11,7 +10,7 @@ import java.time.LocalDate;
 public class EmployeTest {
 
     @Test
-    public void testGetNombreAnneeAncienneteInfNow() {
+    void testGetNombreAnneeAncienneteInfNow() {
         //given
         LocalDate dateEmbauche = LocalDate.of(LocalDate.now().minusYears(6).getYear(), 02, 12);
 
@@ -29,7 +28,7 @@ public class EmployeTest {
     }
 
     @Test
-    public void testGetNombreAnneeAncienneteSupNow() {
+    void testGetNombreAnneeAncienneteSupNow() {
         //given
         LocalDate dateEmbauche = LocalDate.of(LocalDate.now().plusYears(6).getYear(), 02, 12);
 
@@ -44,7 +43,7 @@ public class EmployeTest {
     }
 
     @Test
-    public void testGetNbAnneeAncienneteDateEmbaucheNull(){
+    void testGetNbAnneeAncienneteDateEmbaucheNull(){
         //given
         Employe employe = new Employe();
         employe.setDateEmbauche(null);
@@ -57,7 +56,7 @@ public class EmployeTest {
     }
 
     @Test
-    public void testGetNbAnneeAncienneteDateEmbaucheNow(){
+    void testGetNbAnneeAncienneteDateEmbaucheNow(){
         //Given
         Employe employe = new Employe("Doe", "John", "T12345",
                 LocalDate.now(), 1500d, 1, 1.0);
@@ -83,7 +82,7 @@ public class EmployeTest {
             "1, 'M12345', 1.0, 0, 1700d",
             "1, 'M12345', 1.0, 3, 2000d"
     })
-    public void testGetPrimeAnnuelle(Integer performance, String matricule, Double tauxActivite, Long nbAnneesAnciennete, Double primeAttendu){
+    void testGetPrimeAnnuelle(Integer performance, String matricule, Double tauxActivite, Long nbAnneesAnciennete, Double primeAttendu){
 
         Employe employe = new Employe("Doe", "John", matricule,
                 LocalDate.now().minusYears(nbAnneesAnciennete), 1500d, performance, tauxActivite);
@@ -94,13 +93,108 @@ public class EmployeTest {
     }
 
     @Test
-    public void testGetPrimeAnnuelleMatriculeNull(){
+    void testGetPrimeAnnuelleMatriculeNull(){
         Employe employe = new Employe("Doe", "John", null,
                 LocalDate.now(), 1500d, 1, 1.0);
 
         Double prime = employe.getPrimeAnnuelle();
 
         Assertions.assertThat(prime).isEqualTo(1000.0);
+    }
+
+
+    /*
+    TESTS TP
+     */
+
+    /*
+    tests pour la méthode augmenterSalaire
+    base calcul : (1 + @pourcentage) * salaire
+    cas possible lorsqu'on augmente un salaire :
+    - si salaire non def (0 ou null)
+    - si pourcentage incorrect (> 1 ou < 0)
+    - si pourcentage = 0
+    -
+    */
+
+    //salaire null
+    @Test
+    void testAugmenterSalaireNull(){
+        //given
+        Employe employe = new Employe("Doe", "John", "C00001",
+                LocalDate.now(), null, 1, 1.0);
+        //when
+        employe.augmenterSalaire(0.5);
+        //then
+        Assertions.assertThat(employe.getSalaire()).isNull();
+    }
+
+    @Test
+    void testAugmenterSalaireZero(){
+        //given
+        Employe employe = new Employe();
+        employe.setSalaire(0.0);
+
+        //when
+        employe.augmenterSalaire(0.5);
+
+        //then
+        Assertions.assertThat(employe.getSalaire()).isZero();
+    }
+
+    @Test
+    void testAugmenterSalairePourcentageNegatif(){
+        //given
+        Double pourcentage = -0.1;
+
+        Employe employe = new Employe();
+        Double salaireBase = 1500.0;
+        employe.setSalaire(salaireBase);
+
+        //when
+        employe.augmenterSalaire(pourcentage);
+
+        //then
+        Assertions.assertThat(employe.getSalaire()).isEqualTo(salaireBase);
+    }
+
+    @Test
+    void testAugmenterSalairePourcentageSupUn(){
+        //given
+        Double pourcentage = 1.1;
+        Double salaireBase = 1500.0;
+        Employe employe = new Employe();
+        employe.setSalaire(salaireBase);
+
+        //when
+        employe.augmenterSalaire(pourcentage);
+
+        //then
+        Assertions.assertThat(employe.getSalaire()).isEqualTo(salaireBase);
+    }
+
+    /*
+    Test pour getNbRTT
+     */
+
+    @ParameterizedTest(name = "date : {0} nbRTT : {1}")
+    @CsvSource({
+            "2019, 8",
+            "2021, 10",
+            "2022, 10",
+            "2032, 11",
+            "2016, 9", /* pour cas de Vendredi */
+            "2026, 9" /* pour cas de Jeudi*/
+    })
+    void testGetNbRtt(Integer dateReference, Integer nbAttendu){
+        //given
+        Employe employe = new Employe();
+
+        //when
+        Integer nbRTT = employe.getNbRtt(LocalDate.of(dateReference, 1, 1));
+
+        //then
+        Assertions.assertThat(nbRTT).isEqualTo(nbAttendu);
     }
 
 }

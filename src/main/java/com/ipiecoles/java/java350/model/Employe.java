@@ -6,7 +6,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Entity
 public class Employe {
@@ -62,19 +61,42 @@ public class Employe {
         return getNbRtt(LocalDate.now());
     }
 
-    public Integer getNbRtt(LocalDate d){
-        int i1 = d.isLeapYear() ? 365 : 366;int var = 104;
-        switch (LocalDate.of(d.getYear(),1,1).getDayOfWeek()){
-        case THURSDAY: if(d.isLeapYear()) var =  var + 1; break;
-        case FRIDAY:
-        if(d.isLeapYear()) var =  var + 2;
-        else var =  var + 1;
-case SATURDAY:var = var + 1;
-                    break;
+    /**
+     * Méthode permettant de calculer le nombre de jourr de RTT dans l'année selon la formule :
+     * Nb jours RTT =
+     * Nombre de jours dans l'annéee
+     * - Nombre de jours travaillés dans l'année en plein temps
+     * - Nombre de samedi et dimanche dans l'année
+     * - Nombre de jours fériés ne tombant pas le week end
+     * - Nombre de congés payés
+     * @param dateReference
+     * @return Nombre de jours de RTT pour l'employé
+     * au prorata du temps d'activité
+     */
+    public Integer getNbRtt(LocalDate dateReference) {
+        int nbJoursAnnee = dateReference.isLeapYear() ? 366 : 365;
+        int nbSamediDimanche = 104;
+        switch (LocalDate.of(dateReference.getYear(), 1, 1).getDayOfWeek()) {
+            case THURSDAY:
+                if (dateReference.isLeapYear()) nbSamediDimanche = nbSamediDimanche + 1;
+                break;
+            case FRIDAY:
+                if (dateReference.isLeapYear()) nbSamediDimanche = nbSamediDimanche + 2;
+                else nbSamediDimanche = nbSamediDimanche + 1;
+                break;
+            case SATURDAY:
+                nbSamediDimanche = nbSamediDimanche + 1;
+                break;
         }
-        int monInt = (int) Entreprise.joursFeries(d).stream().filter(localDate ->
+        int nbJoursFeriesSemaine = (int) Entreprise.joursFeries(dateReference).stream().filter(localDate ->
                 localDate.getDayOfWeek().getValue() <= DayOfWeek.FRIDAY.getValue()).count();
-        return (int) Math.ceil((i1 - Entreprise.NB_JOURS_MAX_FORFAIT - var - Entreprise.NB_CONGES_BASE - monInt) * tempsPartiel);
+        return (int) Math.ceil((
+                nbJoursAnnee
+                        - Entreprise.NB_JOURS_MAX_FORFAIT
+                        - nbSamediDimanche
+                        - Entreprise.NB_CONGES_BASE
+                        - nbJoursFeriesSemaine
+        ) * tempsPartiel);
     }
 
     /**
@@ -113,7 +135,12 @@ case SATURDAY:var = var + 1;
     }
 
     //Augmenter salaire
-    //public void augmenterSalaire(double pourcentage){}
+    //conditions pour éviter un salaire null, et pourcentage entre 0 et 1
+    public void augmenterSalaire(double pourcentage){
+        if (this.salaire != null && pourcentage > 0 && pourcentage < 1.1){
+            setSalaire(this.salaire * (1 + pourcentage));
+        }
+    }
 
     public Long getId() {
         return id;
@@ -208,24 +235,5 @@ case SATURDAY:var = var + 1;
 
     public void setTempsPartiel(Double tempsPartiel) {
         this.tempsPartiel = tempsPartiel;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Employe)) return false;
-        Employe employe = (Employe) o;
-        return Objects.equals(id, employe.id) &&
-                Objects.equals(nom, employe.nom) &&
-                Objects.equals(prenom, employe.prenom) &&
-                Objects.equals(matricule, employe.matricule) &&
-                Objects.equals(dateEmbauche, employe.dateEmbauche) &&
-                Objects.equals(salaire, employe.salaire) &&
-                Objects.equals(performance, employe.performance);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, nom, prenom, matricule, dateEmbauche, salaire, performance);
     }
 }
